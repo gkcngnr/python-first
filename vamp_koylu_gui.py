@@ -1,7 +1,7 @@
 from tkinter import *
 import random
 root = Tk()
-root.title("Vampir Oyunu")
+root.title("Vampir Oyunu         v.1.0.1")
 #root.geometry("315x300")
 root.config(bg="#355C7D")
 
