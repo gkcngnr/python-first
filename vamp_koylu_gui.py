@@ -5,57 +5,65 @@ root.title("Vampir Oyunu")
 #root.geometry("315x300")
 root.config(bg="#355C7D")
 
+playerNumber=Label(text="Oyuncu sayısı giriniz..", padx=5, pady=2, font="courier", fg="#C7D0D7",bg="#355C7D")
+playerNumber.grid(row=0, column=0, columnspan=4)
 
-label1=Label(text="Oyuncu sayısı giriniz..", padx=5, pady=2, font="courier", fg="#C7D0D7",bg="#355C7D")
-label1.grid(row=0, column=0, columnspan=4)
-
-e1 = Entry(root, width=50, borderwidth=6)
-e1.grid(row=1, column=0, columnspan=4, pady=5)
+playerNumberEntry = Entry(root, width=50, borderwidth=6)
+playerNumberEntry.grid(row=1, column=0, columnspan=4, pady=5)
 
 
 oyuncu = []
 roller = []
 label_list = []
 def enter():
+    num = int(playerNumberEntry.get())
+    for i in range(num):
+        gamerLabel = Label(text="Oyuncu adı:", bg="#F8B195")
+        gamerLabel.grid(row=3+i, column=0, pady=2)
+        gamerEntry = Entry(root, width=38, borderwidth=2, bg="#F8B195")
+        gamerEntry.grid(row=3+i, column=1)
+        oyuncu.append(gamerEntry)
+        label_list.append(gamerLabel)
+    for i in range(num):
 
-    num = int(e1.get())
-    for i in range(num):
-        l = Label(text="Oyuncu adı:", bg="#F8B195")
-        l.grid(row=3+i, column=0, pady=2)
-        e = Entry(root, width=38, borderwidth=2, bg="#F8B195")
-        e.grid(row=3+i, column=1)
-        oyuncu.append(e)
-        label_list.append(l)
-    for i in range(num):
-        l2 = Label(text="   Rol giriniz:")
-        l2.grid(row=4+num+i, column=0,  pady=2)
-        e2 = Entry(root, width=38, borderwidth=2)
-        e2.grid(row=4+num+i, column=1)
-        roller.append(e2)
-        label_list.append(l2)
+        roleLabel = Label(text="   Rol giriniz:")
+        roleLabel.grid(row=3+i, column=4, pady=2)
+        roleEntry = Entry(root, width=38, borderwidth=2)
+        roleEntry.grid(row=3+i, column=5)
+        roller.append(roleEntry)
+        label_list.append(roleLabel)
+
+#            roleLabel = Label(text="   Rol giriniz:")
+#            roleLabel.grid(row=4+num+i, column=0,  pady=2)
+#            roleEntry = Entry(root, width=38, borderwidth=2)
+#            roleEntry.grid(row=4+num+i, column=1)
+#            roller.append(roleEntry)
+#            label_list.append(roleLabel)
     global matchButton
     matchButton = Button(root, text="Match", command=entry_control, bg="#C7D0D7",padx=5, pady=2)
     matchButton.grid(row=4+2*num, column=0, columnspan=1, pady=5)
-
+    enterButton.config(state=DISABLED)
 
     def on_enter_pressed2(event):
         entry_control()
 
-    e2.bind('<Return>', on_enter_pressed2)
+    roleEntry.bind('<Return>', on_enter_pressed2)
 
 def reset():
-    for entry in oyuncu:
-        entry.destroy()
-    for entry in roller:
-        entry.destroy()
-    for label in label_list:
-        label.destroy()
     if "matchButton" in globals():
-        matchButton.destroy()
-    e1.delete(0,END)
-    oyuncu.clear()
-    roller.clear()
-    label_list.clear()
+        for entry in oyuncu:
+            entry.destroy()
+        for entry in roller:
+            entry.destroy()
+        for label in label_list:
+            label.destroy()
+        if "matchButton" in globals():
+            matchButton.destroy()
+        enterButton.config(state=NORMAL)
+        playerNumberEntry.delete(0,END)
+        oyuncu.clear()
+        roller.clear()
+        label_list.clear()
 
 
 
@@ -76,8 +84,10 @@ def entry_control():
             break
         elif entry.get() in oyuncu_isim:
             sonuc_text = "Aynı isim olamaz"
+            entry.config(fg="red")
             break
         else:
+            entry.config(fg="black")
             oyuncu_isim.append(entry.get())
 
     for entry in roller:
@@ -91,7 +101,7 @@ def entry_control():
         if "errorlabel" in globals():
             errorlabel.destroy()
         errorlabel = Label(text=sonuc_text, fg="red")
-        errorlabel.grid(row=6 + 2 * int(e1.get()), column=0, columnspan=2)
+        errorlabel.grid(row=6 + 2 * int(playerNumberEntry.get()), column=0, columnspan=2)
         label_list.append(errorlabel)
     else:
         if "errorlabel" in globals():
@@ -99,7 +109,6 @@ def entry_control():
         result()
 
 def result():
-
     if "errorlabel" in globals():
         for error in "errorlabel":
             errorlabel.destroy()
@@ -123,17 +132,17 @@ def result():
 
     global sonuclabel
     sonuclabel =Label(text=sonuc_text, pady=5)
-    sonuclabel.grid(row=5+2*int(e1.get()), column=0, columnspan=2)
+    sonuclabel.grid(row=5+2*int(playerNumberEntry.get()), column=0, columnspan=2)
     label_list.append(sonuclabel)
 
 
 def on_enter_pressed1(event):
     enter()
-e1.bind('<Return>', on_enter_pressed1)
+playerNumberEntry.bind('<Return>', on_enter_pressed1)
 
 
-b1=Button(root, text="Enter", command=enter, bg="#C7D0D7", padx=5, pady=2)
-b1.grid(row=2, column=0, columnspan=1, pady=5)
+enterButton=Button(root, text="Enter", command=enter, bg="#C7D0D7", padx=5, pady=2)
+enterButton.grid(row=2, column=0, columnspan=1, pady=5)
 
 resetButton = Button(root, text="Reset", command=reset, bg="#F67280", padx=5, pady=2)
 resetButton.grid(row=2, column=1, columnspan=1, pady=5, padx=5)
