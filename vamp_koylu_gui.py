@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> b7a17f6e41f77d73493fc914b8e048735c5ac1cd
 from tkinter import *
 import random
 root = Tk()
